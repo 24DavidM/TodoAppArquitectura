@@ -1,8 +1,8 @@
 // 🟢 DEPENDENCY INJECTION: Aquí se conectan todas las piezas
 // Este es el único lugar que conoce las implementaciones concretas
  
-import { SQLiteTodoDataSource } from '@/src/data/datasources/SQLiteTodoDataSource';
-import { TodoRepositoryImpl } from '@/src/data/repositories/TodoRepositoryImpl';
+import { FirebaseTodoDataSource } from '@/src/data/datasources/FirebaseTodoDataSource';
+import { TodoRepositoryFirebaseImpl } from '@/src/data/repositories/TodoRepositoryFirebaseImpl';
 import { CreateTodo } from '@/src/domain/usecases/CreateTodo';
 import { DeleteTodo } from '@/src/domain/usecases/DeleteTodo';
 import { GetAllTodos } from '../domain/usecases/GetAllTodo';
@@ -11,8 +11,8 @@ import { ToogleTodo } from '../domain/usecases/ToogleTodo';
 // 🟢 Singleton para mantener una sola instancia
 class DIContainer {
   private static instance: DIContainer;
-  private _dataSource: SQLiteTodoDataSource | null = null;
-  private _repository: TodoRepositoryImpl | null = null;
+  private _dataSource: FirebaseTodoDataSource | null = null;
+  private _repository: TodoRepositoryFirebaseImpl | null = null;
  
   private constructor() {}
  
@@ -24,9 +24,9 @@ class DIContainer {
   }
  
   async initialize(): Promise<void> {
-    this._dataSource = new SQLiteTodoDataSource();
+    this._dataSource = new FirebaseTodoDataSource();
     await this._dataSource.initialize();
-    this._repository = new TodoRepositoryImpl(this._dataSource);
+    this._repository = new TodoRepositoryFirebaseImpl(this._dataSource);
   }
  
   // 🟢 Use Cases - cada uno recibe el repository
