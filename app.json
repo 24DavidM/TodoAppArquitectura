@@ -40,7 +40,8 @@
           }
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -49,7 +50,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "6ce8a097-872d-4e67-aeb0-eff78b9c23fd"
+        "projectId": "437c96a1-b61a-41d7-b0f4-feb6fc96bd26"
       }
     }
   }

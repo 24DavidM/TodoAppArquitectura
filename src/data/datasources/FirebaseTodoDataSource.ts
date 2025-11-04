@@ -1,18 +1,19 @@
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  getDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  orderBy,
-  where,
-  Timestamp,
-} from "firebase/firestore";
-import { db } from "../../../Firebaseconfig";
 import { Todo } from "@/src/domain/entities/Todo";
+import { db } from "@/Firebaseconfig";
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    orderBy,
+    
+    query,
+    Timestamp,
+    updateDoc,
+    where,
+} from "firebase/firestore";
 export class FirebaseTodoDataSource {
   private collectionName = "todos";
   async initialize(): Promise<void> {

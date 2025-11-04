@@ -1,15 +1,15 @@
+import { User } from "@/src/domain/entities/User";
 import {
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
     onAuthStateChanged as firebaseOnAuthStateChanged,
     updateProfile as firebaseUpdateProfile,
-    sendPasswordResetEmail,
     User as FirebaseUser,
+    sendPasswordResetEmail, 
+    signInWithEmailAndPassword,
+    signOut,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../../../Firebaseconfig";
-import { User } from "@/src/domain/entities/User";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { auth, db } from "@/Firebaseconfig";
 export class FirebaseAuthDataSource {
     // ===== MÉTODO PRIVADO: CONVERTIR FIREBASEUSER A USER =====
     private mapFirebaseUserToUser(firebaseUser: FirebaseUser): User {
