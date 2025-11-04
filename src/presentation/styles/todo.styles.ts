@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
- 
+
 export interface TodosTheme {
   background: string;
   surface: string;
@@ -10,7 +10,7 @@ export interface TodosTheme {
   border: string;
   placeholder: string;
 }
- 
+
 /**
 * Factory de estilos que recibe el tema como parametro
 * Esto permite estilos dinmicos basados en dark/light mode
@@ -128,8 +128,48 @@ export const createStyles = (theme: TodosTheme) =>
       marginTop: 10,
       fontSize: 14,
     },
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      padding: 15,
+      backgroundColor: "#007AFF",
+      marginBottom: 10,
+    },
+    userAvatarPlaceholder: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      marginRight: 10,
+      backgroundColor: "#0055CC",
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 2,
+      borderColor: "#fff",
+    },
+    userAvatarText: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: "bold",
+    },
+    userName: {
+      flex: 1,
+      color: "#fff",
+      fontSize: 16,
+      fontWeight: "bold",
+    },
+    logoutButton: {
+      padding: 10,
+      backgroundColor: "#0055CC",
+      borderRadius: 8,
+      marginLeft: 5,
+    },
+    logoutText: {
+      color: "#fff",
+      fontWeight: "bold",
+    },
+
   });
- 
+
 /**
 * Tema por defecto (light mode)
 */
@@ -143,7 +183,7 @@ export const defaultLightTheme: TodosTheme = {
   border: "#e0e0e0",
   placeholder: "#999999",
 };
- 
+
 /**
 * Tema oscuro (dark mode)
 */
@@ -157,3 +197,4 @@ export const defaultDarkTheme: TodosTheme = {
   border: "#38383a",
   placeholder: "#666666",
 };
+

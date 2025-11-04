@@ -1,20 +1,19 @@
-import { CreateTodoDTO, Todo } from "../entities/Todo";
+import { Todo, CreateTodoDTO } from "../entities/Todo";
 import { TodoRepository } from "../repositories/TodoRepository";
-
 export class CreateTodo {
     constructor(private repository: TodoRepository) { }
-
     async execute(data: CreateTodoDTO): Promise<Todo> {
-
-        // AQUI SE PUEDE REALIZAR LAS VALIDACIONES DE NEGOCIO
+        //  Validaciones de negocio
         if (!data.title.trim()) {
-            throw new Error("El titulo no puede estar  vacio")
+            throw new Error("El título no puede estar vacío");
         }
         if (data.title.length > 200) {
-            throw new Error("El titulo es demasiado largo")
+            throw new Error("El título es demasiado largo");
         }
-        return await this.repository.create(data)
-
+        // Validar que userId esté presente
+        if (!data.userId) {
+            throw new Error("User ID is required");
+        }
+        return await this.repository.create(data);
     }
-
 }

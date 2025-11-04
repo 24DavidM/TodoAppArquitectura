@@ -1,55 +1,107 @@
-// 🟢 DEPENDENCY INJECTION: Aquí se conectan todas las piezas
+//  DEPENDENCY INJECTION: Aquí se conectan todas las piezas
 // Este es el único lugar que conoce las implementaciones concretas
- 
+
 import { FirebaseTodoDataSource } from '@/src/data/datasources/FirebaseTodoDataSource';
 import { TodoRepositoryFirebaseImpl } from '@/src/data/repositories/TodoRepositoryFirebaseImpl';
 import { CreateTodo } from '@/src/domain/usecases/CreateTodo';
 import { DeleteTodo } from '@/src/domain/usecases/DeleteTodo';
 import { GetAllTodos } from '../domain/usecases/GetAllTodo';
 import { ToogleTodo } from '../domain/usecases/ToogleTodo';
- 
-// 🟢 Singleton para mantener una sola instancia
+import { FirebaseAuthDataSource } from
+  "../data/datasources/FirebaseAuthDataSource";
+import { AuthRepositoryImpl } from
+  "../data/repositories/AuthRepositoryImpl";
+import { RegisterUser } from "../domain/usecases/RegisterUser";
+import { LoginUser } from "../domain/usecases/LoginUser";
+import { LogoutUser } from "../domain/usecases/LogoutUser";
+import { GetCurrentUser } from "../domain/usecases/GetCurrentUser";
+import { AuthRepository } from "../domain/repositories/AuthRepository";
+
 class DIContainer {
   private static instance: DIContainer;
   private _dataSource: FirebaseTodoDataSource | null = null;
   private _repository: TodoRepositoryFirebaseImpl | null = null;
- 
-  private constructor() {}
- 
+  private _authDataSource?: FirebaseAuthDataSource;
+  private _authRepository?: AuthRepository;
+  private _registerUser?: RegisterUser;
+  private _loginUser?: LoginUser;
+  private _logoutUser?: LogoutUser;
+  private _getCurrentUser?: GetCurrentUser;
+
+  private constructor() { }
+
   static getInstance(): DIContainer {
     if (!DIContainer.instance) {
       DIContainer.instance = new DIContainer();
     }
     return DIContainer.instance;
   }
- 
+
   async initialize(): Promise<void> {
     this._dataSource = new FirebaseTodoDataSource();
     await this._dataSource.initialize();
     this._repository = new TodoRepositoryFirebaseImpl(this._dataSource);
   }
- 
-  // 🟢 Use Cases - cada uno recibe el repository
+
+  // Use Cases - cada uno recibe el repository
   //Cada caso de uso necesita un repository para acceder a los datos
   get getAllTodos(): GetAllTodos {
     if (!this._repository) throw new Error('Container not initialized');
     return new GetAllTodos(this._repository);
   }
- 
+
   get createTodo(): CreateTodo {
     if (!this._repository) throw new Error('Container not initialized');
     return new CreateTodo(this._repository);
   }
- 
+
   get toggleTodo(): ToogleTodo {
     if (!this._repository) throw new Error('Container not initialized');
     return new ToogleTodo(this._repository);
   }
- 
+
   get deleteTodo(): DeleteTodo {
     if (!this._repository) throw new Error('Container not initialized');
     return new DeleteTodo(this._repository);
   }
+  // ===== NUEVOS GETTERS DE AUTH ===== (AGREGAR)
+  get authDataSource(): FirebaseAuthDataSource {
+    if (!this._authDataSource) {
+      this._authDataSource = new FirebaseAuthDataSource();
+    }
+    return this._authDataSource;
+  }
+  get authRepository(): AuthRepository {
+    if (!this._authRepository) {
+      this._authRepository = new AuthRepositoryImpl(this.authDataSource);
+    }
+    return this._authRepository;
+  }
+  get registerUser(): RegisterUser {
+    if (!this._registerUser) {
+      this._registerUser = new RegisterUser(this.authRepository);
+    }
+    return this._registerUser;
+  }
+  get loginUser(): LoginUser {
+    if (!this._loginUser) {
+      this._loginUser = new LoginUser(this.authRepository);
+    }
+    return this._loginUser;
+  }
+  get logoutUser(): LogoutUser {
+    if (!this._logoutUser) {
+      this._logoutUser = new LogoutUser(this.authRepository);
+    }
+    return this._logoutUser;
+  }
+  get getCurrentUser(): GetCurrentUser {
+    if (!this._getCurrentUser) {
+      this._getCurrentUser = new GetCurrentUser(this.authRepository);
+    }
+    return this._getCurrentUser;
+  }
+
 }
- 
+
 export const container = DIContainer.getInstance();
